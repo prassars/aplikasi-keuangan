@@ -133,7 +133,7 @@ def buka_form_transaksi():
 # buat jendela utama
 root = tk.Tk()
 root.title("Aplikasi Pencatat Keuangan")
-root.geometry("600x400") #ukuran jendela
+root.geometry("600x500") #ukuran jendela
 
 # Label judul
 label_title = tk.Label(root, text="Pencatat Keuangan", font=("Arial", 16, "bold"))
@@ -147,19 +147,48 @@ saldo_label.pack()
 columns = ("Tanggal", "Kategori", "Deskripsi", "jumlah")
 tree = ttk.Treeview(root, columns=columns, show="headings")
 
+
 for col in columns:
     tree.heading(col, text=col)
     tree.column(col, width=100)
 
 tree.pack(pady=10, expand=True, fill="both")
 
-# tombol tambah transaksi
-btn_tambah = tk.Button(root, text="Tambah Transaksi", font=("Arial", 12), command=buka_form_transaksi)
-btn_tambah.pack(pady=5)
+root.configure(bg="#f0f0f0")
 
-# tombol hapus
-btn_hps = tk.Button(root, text="Hapus Transaksi", font=("Arial", 12), command=hapus_transaksi)
-btn_hps.pack(pady=5)
+# Frame untuk tombol agar sejajar di tengah
+frame_tombol = tk.Frame(root, bg="#f0f0f0")
+frame_tombol.pack(pady=10)
+
+warna_tombol = "#4CAF50"  # Hijau
+warna_teks_tombol = "white"
+
+# Tombol Tambah Transaksi
+btn_tambah = tk.Button(
+    frame_tombol, 
+    text="Tambah Transaksi", 
+    font=("Arial", 12), 
+    bg=warna_tombol,
+    fg=warna_teks_tombol,
+    activebackground="#45a049",
+    command=buka_form_transaksi
+    )
+btn_tambah.pack(side="left", padx=5)
+
+# Tombol Hapus Transaksi
+btn_hps = tk.Button(
+    frame_tombol, 
+    text="Hapus Transaksi", 
+    font=("Arial", 12), 
+    bg="#f44336",
+    fg="white",
+    activebackground="#d32f2f",
+    command=hapus_transaksi)
+btn_hps.pack(side="left", padx=5)
+
+# Supaya tombol berada di tengah
+frame_tombol.pack(anchor="center")
+
 
 # load data saat aplikasi di jalankan
 load_data()
