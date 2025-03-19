@@ -33,6 +33,42 @@ def load_data():
     
     update_saldo()
 
+def hapus_transaksi() :
+    global saldo
+    # ambil transaksi yang dipilih di tabel
+    selected_item = tree.selection()
+    if not selected_item:
+        messagebox.showwarning("Peringatan", "Pilih transaksi yang ingin di hapus!")
+        return
+    
+    # konfirmasi penghapusan
+    if not messagebox.askyesno("Konfirmasi", "Apakah kamu yakin ingin menghapus transaksi ini?"):
+        return
+    
+    # ambil data transaksi
+    item = tree.item(selected_item)
+    values = item["values"] #format : (tanggal, kategori, deskripsi, jumblah)
+
+    if values:
+        jumlah_str = values[3].replace("Rp ", "").replace(",", "") #hilangkan Rp dan koma
+        jumlah = int(jumlah_str)
+        kategori = values[1] #pemasukan atau pengeluaran
+
+        #jika kategori adl pengeluaran, jumblahnya negatif di database
+        if kategori == "Pengeluaran":
+            jumlah = -jumlah
+
+        # hapus dari database
+        cursor.execute("DELETE FROM transaksi WHERE tanggal=? AND kategori=? AND deskripsi=? AND jumlah=?", (values[0], values[1], values[2], jumlah))
+        conn.commit()
+
+        # habus dari table
+        tree.delete(selected_item)
+
+        # perbarui saldo
+        saldo -= jumlah
+        update_saldo()
+
 def simpan_transaksi(date_entry, kategori_combobox, deskripsi_entry, jumlah_entry, form):
     global saldo
     # mengambil nilai dari input
@@ -120,6 +156,10 @@ tree.pack(pady=10, expand=True, fill="both")
 # tombol tambah transaksi
 btn_tambah = tk.Button(root, text="Tambah Transaksi", font=("Arial", 12), command=buka_form_transaksi)
 btn_tambah.pack(pady=5)
+
+# tombol hapus
+btn_hps = tk.Button(root, text="Hapus Transaksi", font=("Arial", 12), command=hapus_transaksi)
+btn_hps.pack(pady=5)
 
 # load data saat aplikasi di jalankan
 load_data()
