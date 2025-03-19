@@ -38,7 +38,7 @@ def hapus_item():
 def tambah_transaksi():
     form = tk.Toplevel(root)
     form.title("Tambah Transaksi")
-    form.geometry("300x250")
+    form.geometry("300x270")
 
     tk.Label(form, text="Tanggal").pack(anchor="w", padx=10, pady=2)
     date_entry = DateEntry(form)
