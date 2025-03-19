@@ -12,7 +12,8 @@ cursor.execute("""
         id INTEGER PRIMARY KEY AUTOINCREMENT,
         tanggal TEXT,
         kategori TEXT,
-        deskripsi TEXT
+        deskripsi TEXT,
+        jumlah INTEGER
     )
 """)
 conn.commit()
